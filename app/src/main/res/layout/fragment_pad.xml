@@ -2,28 +2,9 @@
     <data>
         <variable name="pad" type="net.st4ndard.sampler.model.Pad"/>
     </data>
-<GridLayout
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="net.st4ndard.sampler.fragment.PadFragment"
-             android:columnCount="4">
 
-    <Button
-            android:text="@{pad.name}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button4"/>
-    <Button
-            android:text="@{pad.name}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button3"/>
-    <Button
-            android:text="Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button2"/>
-    <Button
-            android:text="Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button"/>
-</GridLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </layout>

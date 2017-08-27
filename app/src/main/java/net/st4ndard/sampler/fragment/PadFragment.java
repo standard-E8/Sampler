@@ -2,19 +2,23 @@ package net.st4ndard.sampler.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.st4ndard.sampler.MainApplication;
-import net.st4ndard.sampler.R;
+import net.st4ndard.sampler.RecyclerAdapter;
 import net.st4ndard.sampler.databinding.FragmentPadBinding;
 import net.st4ndard.sampler.model.Pad;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PadFragment extends Fragment {
     FragmentPadBinding binding;
@@ -24,7 +28,7 @@ public class PadFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    // private OnFragmentInteractionListener mListener;
+    // private OnPadFragmentListener mListener;
 
     public PadFragment() {
         // Required empty public constructor
@@ -45,15 +49,37 @@ public class PadFragment extends Fragment {
             mParam1 = getArguments().getString(colmun);
             mParam2 = getArguments().getString(row);
         }
-        SharedPreferences data = MainApplication.getInstance().getApplicationContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Context context = MainApplication.getInstance().getApplicationContext();
         binding = FragmentPadBinding.inflate(inflater, container, false);
         Pad pad = new Pad("pad","",Color.rgb(0, 0, 0));
         binding.setPad(pad);
+        /*
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("button", "clicked!");
+            }});
+        binding.button.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                Log.v("button","Longclicked");
+                return true;
+            }
+        });*/
+        SharedPreferences data = context.getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        List<Pad> pads = new ArrayList<>();
+        pads.add(new Pad("pad1","",5));
+        pads.add(new Pad("pad2","",5));
+
+        RecyclerAdapter adapter = new RecyclerAdapter(pads);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
 
@@ -65,13 +91,12 @@ public class PadFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         /*
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnPadFragmentListener) {
+            mListener = (OnPadFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-        */
+                    + " must implement OnPadFragmentListener");
+        }*/
     }
 
     @Override
@@ -79,10 +104,8 @@ public class PadFragment extends Fragment {
         super.onDetach();
         //mListener = null;
     }
-
-/*
-    public interface OnFragmentInteractionListener {
+    /*
+    public interface OnPadFragmentListener {
         void onFragmentInteraction(Uri uri);
-    }
-*/
+    }*/
 }
