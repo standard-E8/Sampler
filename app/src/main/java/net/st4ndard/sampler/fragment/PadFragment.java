@@ -60,17 +60,6 @@ public class PadFragment extends Fragment {
         Pad pad = new Pad("pad","",Color.rgb(0, 0, 0));
         binding.setPad(pad);
         /*
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v("button", "clicked!");
-            }});
-        binding.button.setOnLongClickListener(new View.OnLongClickListener(){
-            @Override
-            public boolean onLongClick(View v){
-                Log.v("button","Longclicked");
-                return true;
-            }
         });*/
         SharedPreferences data = context.getSharedPreferences("DataSave", Context.MODE_PRIVATE);
         List<Pad> pads = new ArrayList<>();
