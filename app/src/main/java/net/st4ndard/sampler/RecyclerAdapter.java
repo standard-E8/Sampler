@@ -1,5 +1,7 @@
 package net.st4ndard.sampler;
 
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private List<Pad> items;
+    private AudioAttributes audioAttributes;
+    private SoundPool soundPool;
+    private int Sounds;
 
     public RecyclerAdapter(List<Pad> items) {
         this.items = items;
@@ -33,17 +38,38 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // データセット
         holder.binding.setPad(pad);
 
-        holder.binding.button5.setOnClickListener(new View.OnClickListener() {
+        audioAttributes = new AudioAttributes.Builder()
+                // USAGE_MEDIA
+                // USAGE_GAME
+                .setUsage(AudioAttributes.USAGE_GAME)
+                // CONTENT_TYPE_MUSIC
+                // CONTENT_TYPE_SPEECH, etc.
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                // ストリーム数に応じて
+                .setMaxStreams(16)
+                .build();
+
+        // one.wav をロードしておく
+        Sounds = soundPool.load(MainApplication.getInstance().getApplicationContext(), R.raw.atsu, 1);
+
+        holder.binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("button", "clicked!");
-            }});
-        holder.binding.button5.setOnLongClickListener(new View.OnLongClickListener(){
+                // play(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                soundPool.play(Sounds, 1.0f, 1.0f, 0, 0, 1);
+            }
+        });
+        holder.binding.button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v){
-                Log.v("button","Longclicked");
+            public boolean onLongClick(View v) {
+                Log.v("button", "Longclicked");
                 return true;
-            }});
+            }
+        });
 
         // Viewへの反映を即座に行う
         holder.binding.executePendingBindings();
